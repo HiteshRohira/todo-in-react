@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Todo from "./Todo";
+// import Todo from "./Todo";
 
 const TodoInput = () => {
 	const [inputValue, setInputValue] = useState("");
@@ -7,8 +7,16 @@ const TodoInput = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		tasks.push(inputValue);
-		setInputValue("");
+		if (inputValue === "") {
+			alert("Enter something then submit.");
+		} else {
+			setTasks([...tasks, inputValue]);
+			setInputValue("");
+		}
+	};
+
+	const handleDelete = (e) => {
+		setTasks(tasks.filter((task) => e.target.id !== task));
 	};
 
 	return (
@@ -41,11 +49,22 @@ const TodoInput = () => {
 					</div>
 				</form>
 			</div>
-			{tasks.length !== 0 && <Todo tasks={tasks} />}
+			{tasks.length !== 0 && (
+				<ul className="collection">
+					{tasks.map((task) => (
+						<li className="collection-item">
+							{task}
+							<a href="#!" onClick={handleDelete}>
+								<i className="material-icons right" id={task}>
+									clear
+								</i>
+							</a>
+						</li>
+					))}
+				</ul>
+			)}
 		</div>
 	);
 };
 
 export default TodoInput;
-
-// Okay so task is appearing but constantly updating. How do I submit one task and move on to the next one??
